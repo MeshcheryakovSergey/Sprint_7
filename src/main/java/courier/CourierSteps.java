@@ -2,17 +2,16 @@ package courier;
 
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import useful.ApiForTest;
+import util.ApiForTest;
+import util.ApiSpecBuilder;
 
 import java.util.Objects;
 
-import static io.restassured.RestAssured.given;
-
 public class CourierSteps {
 
-    @Step("courier create")
+    @Step("Courier create")
     public static Response createCourier (Courier courier) {
-        Response response = given()
+        Response response = ApiSpecBuilder.requestSpec()
                 .header("Content-type", "application/json")
                 .and()
                 .body(courier)
@@ -21,9 +20,9 @@ public class CourierSteps {
         return response;
     }
 
-    @Step("sing in courier")
+    @Step("Sing in courier")
     public static Response signInCourier (Courier courier) {
-        Response response = given().log().all()
+        Response response = ApiSpecBuilder.requestSpec().log().all()
                 .header("Content-type", "application/json")
                 .and()
                 .body(courier)
@@ -32,10 +31,10 @@ public class CourierSteps {
         return response;
     }
 
-    @Step("delete courier")
+    @Step("Delete courier")
     public static void deleteCourier (String id) {
         if (Objects.nonNull(id)) {
-            given()
+            ApiSpecBuilder.requestSpec()
                     .header("Content-type", "application/json")
                     .and()
                     .body(id)

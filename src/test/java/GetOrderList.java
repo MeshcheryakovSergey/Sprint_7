@@ -1,20 +1,11 @@
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
-import org.junit.Before;
 import org.junit.Test;
-import useful.ApiForTest;
-import useful.BaseURI;
-
+import util.ApiForTest;
+import org.hamcrest.Matchers;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.IsNull.notNullValue;
 
 public class GetOrderList {
-
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = BaseURI.BASE_URI;
-    }
 
     @Test
     @DisplayName("Get order list")
@@ -26,6 +17,7 @@ public class GetOrderList {
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("orders", notNullValue());
+                .body("$", Matchers.hasKey("orders")).body("orders",
+                        Matchers.hasSize(Matchers.greaterThan(0)));
     }
 }

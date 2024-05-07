@@ -1,14 +1,12 @@
 import courier.Courier;
 import courier.CourierSteps;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
 
 import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import useful.BaseURI;
 
 import static org.hamcrest.CoreMatchers.*;
 
@@ -17,13 +15,11 @@ public class LogInCourierTest {
     private static String password;
     private static String firstName;
 
-
     Courier courier;
     String id;
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = BaseURI.BASE_URI;
         login = RandomStringUtils.randomAlphabetic(10);
         password = RandomStringUtils.randomAlphabetic(8);
         firstName = RandomStringUtils.randomAlphabetic(8);
@@ -45,7 +41,7 @@ public class LogInCourierTest {
                 .statusCode(200)
                 .and()
                 .body("id", notNullValue());
-        id = response.then().extract().path("id").toString();
+        fillIdForDel(courier);
     }
 
     @Test
@@ -60,6 +56,7 @@ public class LogInCourierTest {
                 .statusCode(400)
                 .and()
                 .body("message", equalTo("Недостаточно данных для входа"));
+        fillIdForDel(courier);
     }
 
     @Test
@@ -74,6 +71,7 @@ public class LogInCourierTest {
                 .statusCode(400)
                 .and()
                 .body("message", equalTo("Недостаточно данных для входа"));
+        fillIdForDel(courier);
     }
 
     @Test
@@ -100,6 +98,7 @@ public class LogInCourierTest {
                 .statusCode(404)
                 .and()
                 .body("message", equalTo("Учетная запись не найдена"));
+        fillIdForDel(courier);
     }
 
     @Test
@@ -114,5 +113,12 @@ public class LogInCourierTest {
                 .statusCode(404)
                 .and()
                 .body("message", equalTo("Учетная запись не найдена"));
+        fillIdForDel(courier);
     }
+
+    private void fillIdForDel(Courier courier) {
+        Response response = CourierSteps.signInCourier(courier);
+        id = response.then().extract().path("id").toString();
+    }
+
 }

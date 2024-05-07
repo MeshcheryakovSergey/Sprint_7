@@ -1,2 +1,6 @@
-package order;public enum ColorForOrder {
+package order;
+
+public enum ColorForOrder {
+    BLACK,
+    GREY
 }

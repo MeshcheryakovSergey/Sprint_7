@@ -1,13 +1,11 @@
 import courier.Courier;
 import courier.CourierSteps;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import io.qameta.allure.junit4.DisplayName;
-import useful.BaseURI;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 
@@ -24,7 +22,6 @@ public class CreateCourierTest {
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = BaseURI.BASE_URI;
         login = RandomStringUtils.randomAlphabetic(6);
         password = RandomStringUtils.randomAlphabetic(5);
         firstName = RandomStringUtils.randomAlphabetic(5);
@@ -34,7 +31,6 @@ public class CreateCourierTest {
     public void tearDown() {
         CourierSteps.deleteCourier(id);
     }
-
 
     @Test
     @DisplayName("Success create courier, use /api/v1/courier")
@@ -81,6 +77,7 @@ public class CreateCourierTest {
     public void createTwoSimilarCourierGetError() {
         courier = new Courier(login, password, firstName);
         CourierSteps.createCourier(courier);
+        id = CourierSteps.signInCourier(courier).then().extract().path("id").toString();
         CourierSteps.createCourier(courier)
                 .then().assertThat().statusCode(409)
                 .and()

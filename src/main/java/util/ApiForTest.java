@@ -1,4 +1,4 @@
-package useful;
+package util;
 
 public class ApiForTest {
     public static final String COURIER_PATH = "/api/v1/courier";

@@ -2,7 +2,8 @@ package order;
 
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import useful.ApiForTest;
+import util.ApiForTest;
+import util.ApiSpecBuilder;
 
 import java.util.Objects;
 
@@ -11,7 +12,7 @@ import static io.restassured.RestAssured.given;
 public class OrderSteps {
     @Step("Create order")
     public static Response createOrder(Order order) {
-        Response response = given()
+        Response response = ApiSpecBuilder.requestSpec()
                 .header("Content-type", "application/json")
                 .and()
                 .body(order)
@@ -23,7 +24,7 @@ public class OrderSteps {
     @Step("Cancel order")
     public static void cancelOrder(String track) {
         if (Objects.nonNull(track)) {
-            given()
+            ApiSpecBuilder.requestSpec()
                     .header("Content-type", "application/json")
                     .and()
                     .body(track)

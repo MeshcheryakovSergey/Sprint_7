@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import useful.BaseURI;
+import util.ApiSpecBuilder;
 
 import java.util.List;
 
@@ -27,16 +27,11 @@ public class CreateOrderTest {
     @Parameterized.Parameters
     public static Object[][] chooseColor() {
         return new Object[][]{
-                {List.of(ColorForOrder.BLACK_COLOR)},
-                {List.of(ColorForOrder.GREY_COLOR)},
-                {List.of(ColorForOrder.BLACK_COLOR, ColorForOrder.GREY_COLOR)},
+                {List.of(ColorForOrder.BLACK)},
+                {List.of(ColorForOrder.GREY)},
+                {List.of(ColorForOrder.BLACK, ColorForOrder.GREY)},
                 {List.of()},
         };
-    }
-
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = BaseURI.BASE_URI;
     }
 
     @After
